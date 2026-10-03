@@ -90,7 +90,7 @@ function checkSelectedCards() {
       selectedCards.forEach((card) => card.classList.remove("is-open"));
       isBoardLocked = false;
       if (pairsValue.textContent === "8") {
-        openGameWinModal();
+        openGameWinModal(parseInt(movesValue.textContent, 10));
         saveMove(parseInt(movesValue.textContent, 10));
       }
     } else {

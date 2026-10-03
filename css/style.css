@@ -192,6 +192,40 @@ body.is-modal-open {
   text-align: center;
 }
 
+.modal__moves {
+  margin-top: 12px;
+  color: #f3e2b3;
+  font-size: 1.25rem;
+  text-align: center;
+}
+
+.leaderboard {
+  width: 100%;
+  margin-top: 16px;
+  border-collapse: collapse;
+  text-align: center;
+}
+
+.leaderboard th,
+.leaderboard td {
+  padding: 8px 6px;
+  border-bottom: 1px solid rgba(230, 194, 122, 0.2);
+}
+
+.leaderboard th {
+  color: #b7c0d4;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.leaderboard__empty {
+  margin-top: 16px;
+  color: #b7c0d4;
+  text-align: center;
+}
+
 .modal__actions {
   display: flex;
   gap: 12px;
