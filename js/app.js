@@ -138,7 +138,7 @@
     const cancelButton = createButton("button", "Нет");
 
     text.id = "new-game-question";
-    modal.dialog.setAttribute("aria-labelledby", "new-game-question");
+    modal.dialog.setAttribute("aria-label", "new-game-question");
     confirmButton.addEventListener("click", () => {
       modal.close();
       resetGame();
@@ -154,6 +154,30 @@
 
   function openNewGameModal() {
     newGameModal.open();
+  }
+
+  function createGameWinModal() {
+    const modal = createModal();
+    const text = createElement("p", "modal__text__win", "Поздравляем! Вы нашли все пары!");
+    const actions = createElement("div", "modal__actions__win");
+    const newGameButton = createButton("button", "Новая игра");
+
+    text.id = "game-win-message";
+    modal.dialog.setAttribute("aria-label", "game-win-message");
+    newGameButton.addEventListener("click", () => {
+      modal.close();
+      resetGame();
+    });
+    actions.append(newGameButton);
+    modal.dialog.append(text, actions);
+
+    return modal;
+  }
+
+  const gameOverModal = createGameWinModal();
+
+  function openGameWinModal() {
+    gameOverModal.open();
   }
 
   function startGame() {
@@ -221,6 +245,9 @@
         selectedCards.forEach((card) => card.classList.add("is-matched"));
         selectedCards.forEach((card) => card.classList.remove("is-open"));
         isBoardLocked = false;
+        if (pairsValue.textContent === "8") {
+          openGameWinModal();
+        }
       } else {
         closeTimerId = setTimeout(() => {
           selectedCards.forEach((card) => card.classList.remove("is-open"));
@@ -236,6 +263,7 @@
     createMain(),
     createFooter(),
     newGameModal.overlay,
+    gameOverModal.overlay,
   );
   
   startGame();
