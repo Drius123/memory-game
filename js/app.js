@@ -138,7 +138,7 @@
     modal.dialog.setAttribute("aria-labelledby", "new-game-question");
     confirmButton.addEventListener("click", () => {
       modal.close();
-      startGame();
+      resetGame();
     });
     cancelButton.addEventListener("click", modal.close);
     actions.append(confirmButton, cancelButton);
@@ -156,7 +156,6 @@
   function startGame() {
     planets.sort(() => Math.random() - 0.5);
     const board = document.querySelector(".board");
-    board.replaceChildren();
     planets.forEach((planet) => {
       const card = createElement("button", "card");
       const cardInner = createElement("div", "card__inner");
@@ -174,10 +173,38 @@
       card.append(cardInner);
       card.setAttribute("data-planet", planet);
       card.addEventListener("click", () => {
-        card.classList.toggle("is-open");
+        card.classList.add("is-open");
+        checkSelectedCards();
       });
       board.append(card);
     });
+  }
+
+  function resetGame() {
+    const board = document.querySelector(".board");
+    board.replaceChildren();
+    startGame();
+  }
+
+  function checkSelectedCards() {
+    const selectedCards = document.querySelectorAll(".card.is-open");
+    if (selectedCards.length === 2) {
+      const movesValue = document.querySelector(".stats__value");
+      movesValue.textContent = parseInt(movesValue.textContent) + 1;
+      const [firstCard, secondCard] = selectedCards;
+      const firstPlanet = firstCard.getAttribute("data-planet");
+      const secondPlanet = secondCard.getAttribute("data-planet");
+      if (firstPlanet === secondPlanet) {
+        const pairsValue = document.querySelectorAll(".stats__value")[1];
+        pairsValue.textContent = parseInt(pairsValue.textContent) + 1;
+        selectedCards.forEach((card) => card.classList.add("is-matched"));
+        selectedCards.forEach((card) => card.classList.remove("is-open"));
+      } else {
+        setTimeout(() => {
+          selectedCards.forEach((card) => card.classList.remove("is-open"));
+        }, 1000);
+      }
+    }
   }
 
   document.body.append(
@@ -186,5 +213,6 @@
     createFooter(),
     newGameModal.overlay,
   );
+  
   startGame();
 })();
