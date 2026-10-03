@@ -43,6 +43,7 @@
     const title = createElement("h1", "header__title", "Memory Game");
     const actions = createElement("nav", "header__actions");
     const newGameButton = createButton("button", "Новая игра");
+    newGameButton.addEventListener("click", openNewGameModal);
     const leadersButton = createButton("button", "Таблица лидеров");
 
     actions.setAttribute("aria-label", "Действия");
@@ -89,9 +90,73 @@
     return footer;
   }
 
+  function createModal() {
+    const overlay = createElement("div", "modal");
+    const dialog = createElement("div", "modal__window");
+
+    overlay.hidden = true;
+    dialog.setAttribute("aria-modal", "true");
+    overlay.append(dialog);
+
+    function open() {
+      overlay.hidden = false;
+      document.body.classList.add("is-modal-open");
+    }
+
+    function close() {
+      overlay.hidden = true;
+      document.body.classList.remove("is-modal-open");
+    }
+
+    overlay.addEventListener("click", (event) => {
+      if (event.target === overlay) {
+        close();
+      }
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && !overlay.hidden) {
+        close();
+      }
+    });
+
+    return { overlay, dialog, open, close };
+  }
+
+  function createNewGameModal() {
+    const modal = createModal();
+    const text = createElement(
+      "p",
+      "modal__text",
+      "Вы точно хотите начать новую игру?",
+    );
+    const actions = createElement("div", "modal__actions");
+    const confirmButton = createButton("button", "Да");
+    const cancelButton = createButton("button", "Нет");
+
+    text.id = "new-game-question";
+    modal.dialog.setAttribute("aria-labelledby", "new-game-question");
+    confirmButton.addEventListener("click", () => {
+      modal.close();
+      startGame();
+    });
+    cancelButton.addEventListener("click", modal.close);
+    actions.append(confirmButton, cancelButton);
+    modal.dialog.append(text, actions);
+
+    return modal;
+  }
+
+  const newGameModal = createNewGameModal();
+
+  function openNewGameModal() {
+    newGameModal.open();
+  }
+
   function startGame() {
     planets.sort(() => Math.random() - 0.5);
     const board = document.querySelector(".board");
+    board.replaceChildren();
     planets.forEach((planet) => {
       const card = createElement("button", "card");
       const cardInner = createElement("div", "card__inner");
@@ -115,6 +180,11 @@
     });
   }
 
-  document.body.append(createHeader(), createMain(), createFooter());
+  document.body.append(
+    createHeader(),
+    createMain(),
+    createFooter(),
+    newGameModal.overlay,
+  );
   startGame();
 })();
