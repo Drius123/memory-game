@@ -20,8 +20,8 @@ export function createGameWinModal() {
   return modal;
 }
 
-export const gameOverModal = createGameWinModal();
+export const gameWinModal = createGameWinModal();
 
 export function openGameWinModal() {
-  gameOverModal.open();
+  gameWinModal.open();
 }

@@ -1,4 +1,5 @@
 import { createElement } from "./createElement.js";
+import { saveMove } from "./movesStorage.js";
 import { openGameWinModal } from "./winModal.js";
 
 let isBoardLocked = false;
@@ -90,6 +91,7 @@ function checkSelectedCards() {
       isBoardLocked = false;
       if (pairsValue.textContent === "8") {
         openGameWinModal();
+        saveMove(parseInt(movesValue.textContent, 10));
       }
     } else {
       closeTimerId = setTimeout(() => {
