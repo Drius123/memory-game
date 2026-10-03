@@ -1,4 +1,23 @@
 (function () {
+  const planets = [
+    "earth",
+    "jupiter",
+    "mars",
+    "mercury",
+    "neptune",
+    "saturn",
+    "uranus",
+    "venus",
+    "earth",
+    "jupiter",
+    "mars",
+    "mercury",
+    "neptune",
+    "saturn",
+    "uranus",
+    "venus",
+  ];
+
   function createElement(tag, className, text) {
     const element = document.createElement(tag);
 
@@ -70,5 +89,32 @@
     return footer;
   }
 
+  function startGame() {
+    planets.sort(() => Math.random() - 0.5);
+    const board = document.querySelector(".board");
+    planets.forEach((planet) => {
+      const card = createElement("button", "card");
+      const cardInner = createElement("div", "card__inner");
+      const cardFront = createElement("div", "card__front");
+      const cardFrontImg = createElement("img");
+      cardFrontImg.src = "./assets/card-front.jpg";
+      cardFrontImg.alt = "Card front";
+      cardFront.append(cardFrontImg);
+      const cardBackImg = createElement("img");
+      cardBackImg.src = `./assets//${planet}.jpg`;
+      cardBackImg.alt = planet;
+      const cardBack = createElement("div", "card__back");
+      cardBack.append(cardBackImg);
+      cardInner.append(cardFront, cardBack);
+      card.append(cardInner);
+      card.setAttribute("data-planet", planet);
+      card.addEventListener("click", () => {
+        card.classList.toggle("is-open");
+      });
+      board.append(card);
+    });
+  }
+
   document.body.append(createHeader(), createMain(), createFooter());
+  startGame();
 })();

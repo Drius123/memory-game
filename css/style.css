@@ -48,4 +48,38 @@ body {
   gap: 12px;
   max-width: 640px;
   width: 100%;
+  .card {
+    aspect-ratio: 1;
+    perspective: 800px;
+
+    .card__inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+      transition: transform 0.5s;
+    }
+
+    .card__front,
+    .card__back {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      backface-visibility: hidden;
+    }
+
+    .card__back {
+      transform: rotateY(180deg);
+    }
+
+    &.is-open .card__inner {
+      transform: rotateY(180deg);
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
 }
